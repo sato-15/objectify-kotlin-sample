@@ -1,4 +1,4 @@
-package jp.gr.java_conf.satok.objectifykotlinsample
+package jp.gr.java_conf.satok.objectify.sample
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

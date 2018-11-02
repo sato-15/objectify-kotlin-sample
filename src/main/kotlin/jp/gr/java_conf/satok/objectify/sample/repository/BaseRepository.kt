@@ -4,7 +4,7 @@ import com.google.cloud.datastore.Cursor
 import com.googlecode.objectify.Key
 import com.googlecode.objectify.Result
 
-interface DatastoreRepository<T> {
+interface BaseRepository<T> {
 
     fun find(key: Key<T>): T?
 

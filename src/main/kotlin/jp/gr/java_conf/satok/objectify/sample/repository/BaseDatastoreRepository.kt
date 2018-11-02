@@ -7,7 +7,7 @@ import com.googlecode.objectify.ObjectifyService
 import com.googlecode.objectify.Result
 import org.slf4j.LoggerFactory
 
-abstract class BaseDatastoreRepository<T>: DatastoreRepository<T> {
+abstract class BaseDatastoreRepository<T>: BaseRepository<T> {
 
     companion object {
         val logger = LoggerFactory.getLogger(this::class.java.enclosingClass)!!

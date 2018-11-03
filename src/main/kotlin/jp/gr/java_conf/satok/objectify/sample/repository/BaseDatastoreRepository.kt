@@ -21,8 +21,9 @@ abstract class BaseDatastoreRepository<T>: BaseRepository<T> {
         return objectify.load().key(key).now()
     }
 
-    override fun list(cursor: Cursor, limit: Int): Pair<List<T>, Cursor> {
-        val query = objectify.load().type(entityClass).limit(limit)
+    override fun list(cursor: Cursor?, limit: Int?): Pair<List<T>, Cursor> {
+        val queryLimit = if (limit == null) 10 else limit
+        val query = objectify.load().type(entityClass).limit(queryLimit)
         if (cursor != null) {
             query.startAt(cursor)
         }

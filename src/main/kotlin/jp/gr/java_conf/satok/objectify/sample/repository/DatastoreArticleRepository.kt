@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 @Suppress("unused")
-class DatastoreArticleRepository(override val entityClass: Class<Article>) : BaseDatastoreRepository<Article>() {
+class DatastoreArticleRepository(override val entityClass: Class<Article> = Article::class.java) : BaseDatastoreRepository<Article>() {
 
     fun searchByTitle(title: String): MutableList<Article>? {
         return objectify.load().type(entityClass).filter("title =", title).list()

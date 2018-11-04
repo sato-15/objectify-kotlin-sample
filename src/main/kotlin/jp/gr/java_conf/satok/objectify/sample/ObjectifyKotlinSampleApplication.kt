@@ -8,7 +8,18 @@ import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
 @RestController
-class ObjectifyKotlinSampleApplication
+class ObjectifyKotlinSampleApplication {
+
+    // FIXME: Initialize with Cass here
+/*
+    @Bean
+    @Suppress("unused")
+    fun articleRepository(): DatastoreArticleRepository {
+        return DatastoreArticleRepository(Class<Article>)
+    }
+*/
+
+}
 
 fun main(args: Array<String>) {
     ObjectifyService.init()

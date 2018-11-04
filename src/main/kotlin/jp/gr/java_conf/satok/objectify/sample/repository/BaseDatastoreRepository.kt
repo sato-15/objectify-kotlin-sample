@@ -21,13 +21,22 @@ abstract class BaseDatastoreRepository<T>: BaseRepository<T> {
         return objectify.load().key(key).now()
     }
 
-    override fun list(cursor: Cursor?, limit: Int?): Pair<List<T>, Cursor> {
-        val queryLimit = if (limit == null) 10 else limit
+    override fun list(cursor: Cursor?, limit: Int?): Pair<List<T>, Cursor?> {
+        val queryLimit = limit ?: 10
         val query = objectify.load().type(entityClass).limit(queryLimit)
         if (cursor != null) {
             query.startAt(cursor)
         }
-        return Pair(query.list(), query.iterator().cursorAfter)
+        val entities = mutableListOf<T>()
+        val iterator = query.iterator()
+        var hasNext = false
+        while(iterator.hasNext()){
+            entities.add(iterator.next())
+        }
+        if (hasNext) {
+            return Pair(entities, iterator.cursorAfter)
+        }
+        return Pair(entities, null)
     }
 
     override fun insert(key: Key<T>, entity: T): T {

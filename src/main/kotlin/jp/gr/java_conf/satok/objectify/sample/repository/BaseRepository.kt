@@ -8,7 +8,7 @@ interface BaseRepository<T> {
 
     fun find(key: Key<T>): T?
 
-    fun list(cursor: Cursor?, limit: Int?): Pair<List<T>, Cursor>
+    fun list(cursor: Cursor?, limit: Int?): Pair<List<T>, Cursor?>
 
     fun insert(key: Key<T>, entity: T): T
 

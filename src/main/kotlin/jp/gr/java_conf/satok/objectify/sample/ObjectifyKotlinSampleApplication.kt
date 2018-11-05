@@ -2,6 +2,7 @@ package jp.gr.java_conf.satok.objectify.sample
 
 import com.googlecode.objectify.ObjectifyService
 import jp.gr.java_conf.satok.objectify.sample.entity.Article
+import jp.gr.java_conf.satok.objectify.sample.tool.UmlGenerator
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.RestController
@@ -25,6 +26,12 @@ fun main(args: Array<String>) {
     ObjectifyService.init()
     ObjectifyService.begin()
     ObjectifyService.register(Article::class.java)
+
+    if (args.isNotEmpty() && args[0] == "generate_uml"){
+        val gen = UmlGenerator()
+        gen.generateUmlFile()
+        return
+    }
 
     runApplication<ObjectifyKotlinSampleApplication>(*args)
 }

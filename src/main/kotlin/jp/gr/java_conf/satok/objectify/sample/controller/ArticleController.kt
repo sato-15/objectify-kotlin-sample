@@ -25,7 +25,7 @@ class ArticleController(private val articleRepository: DatastoreArticleRepositor
     fun list(@RequestParam(name = "cursor", required = false) cursor: String?): MutableMap<String, Any> {
         val decodedCursor = if (cursor == null) null else Cursor.fromUrlSafe(cursor)
         val result = articleRepository.list(decodedCursor, 10)
-        return mutableMapOf("articles" to result.first, "cursor" to result.second.toUrlSafe())
+        return mutableMapOf("articles" to result.first, "cursor" to (result.second?.toUrlSafe() ?: ""))
     }
 
 }

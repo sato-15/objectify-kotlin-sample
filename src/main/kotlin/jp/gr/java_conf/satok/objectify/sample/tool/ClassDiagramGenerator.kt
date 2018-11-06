@@ -31,7 +31,7 @@ class ClassDiagramGenerator {
                 it.javaField?.declaredAnnotations?.forEach {
                     logger.debug("    /'${it.annotationClass.simpleName!!}'/")
                 }
-                logger.debug("    ${it.name}: ${it.returnType}")
+                logger.debug("    ${it.name}: ${it.returnType.toString().removePrefix("kotlin.")}")
             }
             logger.debug("}")
         }

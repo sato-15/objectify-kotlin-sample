@@ -2,7 +2,7 @@ package jp.gr.java_conf.satok.objectify.sample
 
 import com.googlecode.objectify.ObjectifyService
 import jp.gr.java_conf.satok.objectify.sample.entity.Article
-import jp.gr.java_conf.satok.objectify.sample.tool.UmlGenerator
+import jp.gr.java_conf.satok.objectify.sample.tool.ClassDiagramGenerator
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.RestController
@@ -28,7 +28,7 @@ fun main(args: Array<String>) {
     ObjectifyService.register(Article::class.java)
 
     if (args.isNotEmpty() && args[0] == "generate_uml"){
-        val gen = UmlGenerator()
+        val gen = ClassDiagramGenerator()
         gen.generateUmlFile()
         return
     }

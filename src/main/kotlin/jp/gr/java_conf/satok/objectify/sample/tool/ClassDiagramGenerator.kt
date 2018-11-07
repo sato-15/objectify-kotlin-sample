@@ -1,8 +1,11 @@
 package jp.gr.java_conf.satok.objectify.sample.tool
 
 import org.slf4j.LoggerFactory
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaField
 
@@ -17,6 +20,10 @@ class ClassDiagramGenerator {
     fun generateUmlFile(){
         val files = Files.list(Paths.get(ENTITY_PACKAGE_PATH))
 
+        val df = SimpleDateFormat("yyyyMMdd-HHmmss")
+        val classDiagramFile = File("class_diagram_${df.format(Date())}.pu").absoluteFile
+
+
         files.forEach{
             val kClass = Class.forName("$ENTITY_PACKAGE.${it.fileName.toString().split(".")[0]}").kotlin
             var entityClassName: String? = null
@@ -24,16 +31,21 @@ class ClassDiagramGenerator {
                 if (it.annotationClass.simpleName == "Entity") {
                     entityClassName = kClass.simpleName
                     logger.debug("class $entityClassName {")
+                    classDiagramFile.appendText("class $entityClassName {\n")
                 }
             }
 
             kClass.memberProperties.forEach {
                 it.javaField?.declaredAnnotations?.forEach {
                     logger.debug("    /'${it.annotationClass.simpleName!!}'/")
+                    classDiagramFile.appendText("    /'${it.annotationClass.simpleName!!}'/\n")
                 }
                 logger.debug("    ${it.name}: ${it.returnType.toString().removePrefix("kotlin.")}")
+                classDiagramFile.appendText("    ${it.name}: ${it.returnType.toString().removePrefix("kotlin.")}\n")
             }
             logger.debug("}")
+            classDiagramFile.appendText("}\n")
+            classDiagramFile.appendText("\n")
         }
     }
 }

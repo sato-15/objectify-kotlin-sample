@@ -13,6 +13,7 @@ class ClassDiagramGenerator {
 
     companion object {
         val logger = LoggerFactory.getLogger(this::class.java.enclosingClass)!!
+        const val OBJECTIFY_PACKAGE = "com.googlecode.objectify"
         const val ENTITY_PACKAGE = "jp.gr.java_conf.satok.objectify.sample.entity"
         const val ENTITY_PACKAGE_PATH = "src/main/kotlin/jp/gr/java_conf/satok/objectify/sample/entity/"
     }
@@ -35,13 +36,16 @@ class ClassDiagramGenerator {
                 }
             }
 
+            // TODO: retrieve KDoc of property
+
             kClass.memberProperties.forEach {
                 it.javaField?.declaredAnnotations?.forEach {
                     logger.debug("    /'${it.annotationClass.simpleName!!}'/")
                     classDiagramFile.appendText("    /'${it.annotationClass.simpleName!!}'/\n")
                 }
-                logger.debug("    ${it.name}: ${it.returnType.toString().removePrefix("kotlin.")}")
-                classDiagramFile.appendText("    ${it.name}: ${it.returnType.toString().removePrefix("kotlin.")}\n")
+                val simpleClassName = "${it.returnType.toString().removePrefix("kotlin.").removePrefix("$OBJECTIFY_PACKAGE.").replace("$ENTITY_PACKAGE.","")}"
+                logger.debug("    ${it.name}: $simpleClassName")
+                classDiagramFile.appendText("    ${it.name}: $simpleClassName\n")
             }
             logger.debug("}")
             classDiagramFile.appendText("}\n")

@@ -3,6 +3,7 @@ package jp.gr.java_conf.satok.objectify.sample.tool
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,6 +51,16 @@ class ClassDiagramGenerator {
             logger.debug("}")
             classDiagramFile.appendText("}\n")
             classDiagramFile.appendText("\n")
+
+            val propertyMetaList: MutableList<PropertyMeta> = readPropertyMetaList(it)
         }
+    }
+
+    fun readPropertyMetaList(path: Path): MutableList<PropertyMeta> {
+        val file = path.toFile()
+        file.bufferedReader().use {
+            it.lineSequence().filter (String::isNotBlank).forEach { println(it) }
+        }
+        return mutableListOf()
     }
 }

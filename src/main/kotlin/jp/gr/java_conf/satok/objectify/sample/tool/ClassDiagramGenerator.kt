@@ -17,6 +17,8 @@ class ClassDiagramGenerator {
         const val OBJECTIFY_PACKAGE = "com.googlecode.objectify"
         const val ENTITY_PACKAGE = "jp.gr.java_conf.satok.objectify.sample.entity"
         const val ENTITY_PACKAGE_PATH = "src/main/kotlin/jp/gr/java_conf/satok/objectify/sample/entity/"
+        private const val SINGLE_LINE_DOC_REGEX: String = "/\\*\\* (.+) \\*/"
+        private const val PARAMETER_REGEX: String = "(var|var)\\s+([a-zA-Z0-9_]+)\\s*:"
     }
 
     fun generateUmlFile(){
@@ -24,7 +26,6 @@ class ClassDiagramGenerator {
 
         val df = SimpleDateFormat("yyyyMMdd-HHmmss")
         val classDiagramFile = File("class_diagram_${df.format(Date())}.pu").absoluteFile
-
 
         files.forEach{
             val kClass = Class.forName("$ENTITY_PACKAGE.${it.fileName.toString().split(".")[0]}").kotlin
@@ -52,15 +53,30 @@ class ClassDiagramGenerator {
             classDiagramFile.appendText("}\n")
             classDiagramFile.appendText("\n")
 
-            val propertyMetaList: MutableList<PropertyMeta> = readPropertyMetaList(it)
+            logger.debug("+ Document")
+            readPropertyMetaList(it)
+            logger.debug("----")
         }
     }
 
     fun readPropertyMetaList(path: Path): MutableList<PropertyMeta> {
+        var propertyMetaList = mutableListOf<PropertyMeta>()
+        var desc : String? = null
+        var order = 0
         val file = path.toFile()
         file.bufferedReader().use {
-            it.lineSequence().filter (String::isNotBlank).forEach { println(it) }
+            it.lineSequence().filter (String::isNotBlank).forEach {
+                SINGLE_LINE_DOC_REGEX.toRegex().find(it)?.destructured?.let{
+                    (description) -> logger.debug(description)
+                    desc = description
+                }
+                PARAMETER_REGEX.toRegex().find(it)?.destructured?.let{
+                    (def, name) -> logger.debug("$def: $name")
+                    propertyMetaList.add(PropertyMeta(name, mutableListOf(), order+1, desc))
+                    desc = null
+                }
+            }
         }
-        return mutableListOf()
+        return propertyMetaList
     }
 }

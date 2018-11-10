@@ -8,9 +8,11 @@ import com.googlecode.objectify.annotation.Index
 @Entity
 class Article {
 
+    /** Property for Key.name */
     @Id
     lateinit var code: String
 
+    /** Title */
     @Index
     lateinit var title: String
 

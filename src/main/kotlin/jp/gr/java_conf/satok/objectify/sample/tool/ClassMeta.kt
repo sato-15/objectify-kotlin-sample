@@ -3,5 +3,5 @@ package jp.gr.java_conf.satok.objectify.sample.tool
 data class ClassMeta (
     val name: String,
     val annotationNames: MutableList<Annotation>,
-    val propertyMetaList: MutableList<PropertyMeta>
+    val propertyMetaMap: MutableMap<String, PropertyMeta>
 )
